@@ -1,34 +1,37 @@
-# Areté Associates UI/UX Take-Home: Weather Dashboard
+# Areté Associates UI/UX Take-Home: Office 3-Day Forecast
 
-A **staff-level weather application** that demonstrates systems thinking, robust error handling, and high-caliber UI/UX design. This project fetches real-time weather data from the National Weather Service (NWS) API and presents it in a scientific, accessible dashboard format.
+This exercise is intended to evaluate the candidate's ability to create a basic web application. The task is to create a basic application that displays the **3-day forecast** at various Areté offices using the National Weather Service API (https://api.weather.gov/).
 
-## 🎯 Project Goals
+The user selects the office location from a dropdown, then clicks a button to see a 3-day forecast with the date, temperature, and probability of precipitation.
 
-This implementation prioritizes:
+## 🎯 Evaluation Criteria
 
-- **Technical Excellence**: Proper API integration, caching, error handling
-- **UI/UX Quality**: Professional design, accessibility (WCAG AA), responsive layouts
-- **Scalability**: Modular architecture that anticipates growth
-- **First Principles Thinking**: Understanding of meteorological data and performance optimization
+This implementation is evaluated on:
+
+- **Correctness** – The application functions as-intended and implements a reliable solution.
+- **Code Quality** – The application is reliable and maintainable. The solution should be easy to understand using best practices.
+- **Aesthetics** – The UI includes basic design elements to improve the user experience.
+
+_Additionally designed to demonstrate staff-level thinking via error handling, caching, modularity, and accessibility._
 
 ## ✨ Features
 
-- **Real-time Weather Data**: 7-day forecast from the National Weather Service API
+- **Office Selection**: Dropdown menu containing Areté office locations
+- **3-Day Forecast**: Precise viewing of date, temperature, and probability of precipitation
 - **Smart Caching**: localStorage-based caching (15-30 min) to reduce API calls
 - **Intelligent Error Handling**: Graceful degradation with user-friendly error messages and retry mechanisms
 - **Responsive Design**: Beautiful layout on mobile, tablet, and desktop
 - **Accessibility**: WCAG AA compliant with semantic HTML and keyboard navigation
 - **Micro-interactions**: Loading spinners and smooth fade-in animations
-- **Data Transformation**: Proper handling of Celsius temperatures, ISO 8601 timestamps, and edge cases
 
 ## 📋 Project Structure
 
 ```
 .
-├── index.html          # Semantic HTML with accessible markup
+├── index.html          # Semantic HTML and accessible dropdown UI
 ├── style.css           # CSS Grid/Flexbox, variables, animations
 ├── js/
-│   ├── main.js         # UI orchestration and event handlers
+│   ├── script.js       # Base orchestration, office locations, and API endpoints
 │   ├── api.js          # NWS API integration (2-step process)
 │   └── utils.js        # Date formatting, unit conversions
 ├── .copilot            # Project guidelines and architectural notes
@@ -68,10 +71,11 @@ npx http-server
 
 ## 📖 Usage
 
-1. **Enter a Location**: Type a US city name or coordinates in the input field
-2. **View Forecast**: The app automatically fetches and displays the 7-day forecast
-3. **Cached Data**: Subsequent searches use cached data if within 15-30 minutes
-4. **Handle Errors**: If the API is unavailable, you'll see a retry button
+1. **Select an Office**: Choose an Areté office location from the dropdown menu.
+2. **Fetch Weather**: Click the submit button to request the weather.
+3. **View Forecast**: The app processes and displays a precise 3-day forecast highlighting date, temperature, and precipitation.
+4. **Cached Data**: Subsequent searches for the same office use cached data if within 15-30 minutes.
+5. **Handle Errors**: If the API is unavailable, you'll see a retry button.
 
 ## 🔑 Key Technical Decisions
 
@@ -119,9 +123,8 @@ A centralized state object tracks:
 The app gracefully handles:
 
 - NWS API downtime → "Service Temporarily Unavailable" with retry
-- Invalid locations → "Location not found" message
 - Network errors → Connection error with retry button
-- Missing data fields → Proper null checks and default values
+- Missing data fields → Proper null checks and default values for properties like `probabilityOfPrecipitation`
 
 ## ♿ Accessibility
 
@@ -143,9 +146,9 @@ The app gracefully handles:
 
 ### Code Organization
 
-- **main.js**: DOM manipulation, event listeners, state updates
+- **script.js**: Main file handling event listeners, location configurations, and DOM manipulation
 - **api.js**: All NWS API calls, caching, error handling
-- **utils.js**: Date formatting, temperature conversion, timezone handling
+- **utils.js**: Date formatting, temperature conversion, data manipulation
 
 ### Linting & Code Style
 
@@ -166,14 +169,15 @@ No build step required. The project is ready to deploy:
 
 ## 🧪 Testing Checklist
 
-- [ ] Location search works with city names
-- [ ] Caching prevents duplicate API calls
+- [ ] Dropdown menu correctly displays all Areté locations
+- [ ] Clicking the fetch button requests the correct endpoint
+- [ ] Displays parsed 3-day forecast with Date, Temp, and Probability of Precipitation
+- [ ] Caching prevents duplicate API calls for recent identical requests
 - [ ] Error state displays with retry button
 - [ ] Forecast cards display correctly on mobile/tablet/desktop
 - [ ] Keyboard navigation works (Tab, Enter)
 - [ ] Screen reader reads all content properly
-- [ ] Null precipitation values handled (displays "—" or "Unknown")
-- [ ] Timezone displays correctly for user's location
+- [ ] Null precipitation values handled (displays "—" or "0%")
 
 ## 📚 API Documentation
 

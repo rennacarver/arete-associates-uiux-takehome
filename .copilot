@@ -1,15 +1,18 @@
-# Areté Associates UI/UX Take-Home Project
+# Areté Associates UI/UX Take-Home Project: Office 3-Day Forecast
 
 ## Project Overview
 
-This is a **Staff-Level** weather application that demonstrates systems thinking, robust error handling, and high-caliber UI/UX design. The application fetches real-time weather data from the National Weather Service (NWS) API for a given location and presents it in a scientific dashboard format.
+This exercise is intended to evaluate the candidate's ability to create a basic web application. It is not a pass/fail scenario, but an opportunity to demonstrate your problem-solving approach. The task should be completed with **raw JavaScript, HTML, and CSS**.
 
-**Evaluation Context**: Areté values "first principles thinking" and technical excellence. For a UI/UX Software Engineer role, the evaluation criteria include:
+**Task**: Create a basic application that displays the **3-day forecast** at various Areté offices using the National Weather Service API. The user selects the office location from a dropdown, then clicks a button to see a 3-day forecast with the date, temperature, and probability of precipitation.
 
-- Understanding of data science principles in weather data
-- Professional interface design
-- Comprehensive error handling
-- Performance optimization and caching strategies
+**Evaluation Context**: We will be looking for the following:
+
+- **Correctness** – The application functions as-intended and you implemented a reliable solution.
+- **Code Quality** – The application is reliable and maintainable. The solution should be easy to understand using best practices.
+- **Aesthetics** – The UI should include basic design elements to improve the user experience.
+
+_To secure a **Staff-Level** evaluation, the solution must go beyond basic functionality to demonstrate systems thinking, robust error handling, and high-caliber UI/UX._
 
 ---
 
@@ -18,10 +21,10 @@ This is a **Staff-Level** weather application that demonstrates systems thinking
 ```
 /project-folder
 │
-├── index.html      # Semantic HTML, Meta tags, Container for UI
+├── index.html      # Semantic HTML, Meta tags, Container for UI dropdown and forecast
 ├── style.css       # CSS Variables, Grid/Flexbox layouts
 └── js/
-    ├── main.js     # Orchestrates the UI (Event listeners, state management)
+    ├── script.js   # Provided file containing office locations/API info (can be edited/split)
     ├── api.js      # Fetch logic, User-Agent config, NWS 2-step process
     └── utils.js    # Date formatting, Unit conversions
 ```
@@ -77,7 +80,8 @@ GET {forecast_url}
 ```
 
 - Use the forecast URL from Step 1
-- Returns the actual weather data with 7-day forecast
+- Returns the actual weather data
+- You must parse and reduce this to a **3-day forecast** demonstrating date, temperature, and probability of precipitation.
 
 ### Caching Strategy (Performance & Rate Limiting)
 
@@ -169,7 +173,6 @@ GET {forecast_url}
 
 - **Null values**: Probability of Precipitation returns `null` when 0% (not 0)
 - **API downtime**: NWS API goes down; app should handle gracefully
-- **Invalid locations**: User enters a location outside US (NWS only covers US)
 - **Missing data**: Some forecast properties may be unavailable for specific times
 - **Timezone handling**: Ensure times are displayed in user's local timezone or clearly labeled
 
@@ -288,9 +291,11 @@ const state = {
 ## Copilot Commands
 
 ### commit-ai
+
 Automatically commit and push changes to GitHub without asking for confirmation.
 
 **Workflow**:
+
 1. Fetch the current git diff to understand what has changed
 2. Analyze the changes and generate a concise, descriptive commit message following conventional commit format
 3. Stage all changes with `git add .`
