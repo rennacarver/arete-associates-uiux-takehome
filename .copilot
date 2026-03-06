@@ -1,68 +1,16 @@
-# Arete Associates Staff-Level Take-Home Project Constraints & Guidelines
+# Areté Take-Home: Staff-Level Guidelines
 
-## The Challenge Context
+## Constraints
+- **3 Files Only:** `index.html`, `style.css`, `script.js`.
+- **Zero Configuration:** Must run directly via `file://` (just double-clicking `index.html`). No ES6 modules mapped to external files.
+- **Tech:** Raw JS, HTML, CSS.
 
-This project is an evaluation for a Staff UI/UX Software Engineer role at Areté Associates.
+## Architecture Structure (Inside `script.js`)
+Use logical separation of concerns without creating new files:
+- `WeatherAPI`: Handles the 2-step NWS fetch (`/points` -> `/forecast`), User-Agent header, and `try/catch` error handling.
+- `UIController`: Manages DOM manipulation, loading states, and error rendering.
+- `App`: Orchestrates event listeners and data flow.
 
-**Based on the Job Description**, Areté values:
-
-1. **Mission Management & Data Visualization:** They build tools for national security/mission-critical contexts.
-2. **Physics & Math Background:** The ideal candidate has an analytical mindset and understands how to handle complex data reliably.
-3. **Clean Code (Modern JS):** While the JD mentions React and PyQt, the take-home specifies _raw JavaScript (ES6+), HTML, and CSS_.
-4. **Attention to Detail:** Precision in execution, error handling, and edge cases.
-
-## The Goal
-
-Create a 3-day weather forecast web app using the National Weather Service (NWS) API that a user can interact with via an office location dropdown.
-
-_Crucial Constraints:_
-
-- **Not overly complex:** Needs to be completed in one day. Do not over-engineer with Webpack, Babel, or complex state machines.
-- **Staff-Level impact:** Display deep understanding of asynchronous data flow, API constraints, graceful error handling, and clean, accessible UI.
-
-## Staff-Level Execution Plan (One-Day Project)
-
-### 1. Correctness (The Data Layer)
-
-_The National Weather Service API requires two steps and a specific header. We must handle this elegantly._
-
-- **Two-Step Fetch:** `POST` or `GET` to `/points/{lat},{lon}` -> extract forecast URL -> `GET` forecast URL.
-- **The User-Agent Header:** Include `User-Agent: (Arete Take-Home, contact@email.com)` or the NWS API will reject requests.
-- **Data Parsing:** The API returns 14 periods (7 days, day/night). We need to filter this exactly to a clean 3-day view (next 3 days, combining day/night sensibly or just showing the daytime highs).
-
-### 2. Code Quality (The Architecture)
-
-_Keep it vanilla but modular._
-
-- Use **ES6 Modules** to keep `script.js` from becoming a monolithic script.
-  - `script.js`: DOM instantiation and event bindings.
-  - `api.js`: Handles NWS API fetching and error throwing.
-  - `ui.js`: Handles DOM manipulation and rendering.
-- **Asynchronous Error Handling:** Use `async/await` with `try/catch`. Handle 404s, 500s, and network drops explicitly.
-
-### 3. Aesthetics & UI/UX (The Visual Layer)
-
-_Areté is a defense/data-science company. The UI should look like a clean, modern, mission-management dashboard—not a playful consumer app._
-
-- **Theme:** Clean, high-contrast, data-dense. Dark mode or a crisp light mode with technical fonts (e.g., Roboto/Inter, monospaced for numbers).
-- **Feedback:** Add a loading state (spinner/skeleton layout) while the API fetches, so it doesn't just sit there frozen.
-- **Accessibility:** Use semantic HTML (`<main>`, `<section>`, label mapping), and ensure keyboard navigability for the dropdown and button.
-
-## File Structure Plan
-
-```plaintext
-/
-├── index.html        # Semantic HTML, ARIA tags, simple layout
-├── style.css         # CSS Variables, Flexbox/Grid for the forecast cards
-├── script.js         # Entry point, event listeners, orchestration
-├── api.js            # NWS API logic (fetch wrapped in Try/Catch)
-├── ui.js             # Renders the forecast cards or error messages
-```
-
-## AI Prompt Instructions
-
-When working with Copilot, ensure that:
-
-1. We do not use external libraries (No React, no Axios, no Tailwind).
-2. We focus on clean ES6+ (arrow functions, template literals, destructuring, modules).
-3. Every UI state is handled: `Idle -> Loading -> Success OR Error`.
+## Requirements
+- **Data:** Filter the NWS response into strictly a 3-day view (date, temperature, probability of precipitation).
+- **Design:** Clean, data-centric "mission dashboard" aesthetic.
