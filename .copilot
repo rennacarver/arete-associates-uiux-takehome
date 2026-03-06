@@ -1,307 +1,68 @@
-# Areté Associates UI/UX Take-Home Project: Office 3-Day Forecast
+# Arete Associates Staff-Level Take-Home Project Constraints & Guidelines
 
-## Project Overview
+## The Challenge Context
 
-This exercise is intended to evaluate the candidate's ability to create a basic web application. It is not a pass/fail scenario, but an opportunity to demonstrate your problem-solving approach. The task should be completed with **raw JavaScript, HTML, and CSS**.
+This project is an evaluation for a Staff UI/UX Software Engineer role at Areté Associates.
 
-**Task**: Create a basic application that displays the **3-day forecast** at various Areté offices using the National Weather Service API. The user selects the office location from a dropdown, then clicks a button to see a 3-day forecast with the date, temperature, and probability of precipitation.
+**Based on the Job Description**, Areté values:
 
-**Evaluation Context**: We will be looking for the following:
+1. **Mission Management & Data Visualization:** They build tools for national security/mission-critical contexts.
+2. **Physics & Math Background:** The ideal candidate has an analytical mindset and understands how to handle complex data reliably.
+3. **Clean Code (Modern JS):** While the JD mentions React and PyQt, the take-home specifies _raw JavaScript (ES6+), HTML, and CSS_.
+4. **Attention to Detail:** Precision in execution, error handling, and edge cases.
 
-- **Correctness** – The application functions as-intended and you implemented a reliable solution.
-- **Code Quality** – The application is reliable and maintainable. The solution should be easy to understand using best practices.
-- **Aesthetics** – The UI should include basic design elements to improve the user experience.
+## The Goal
 
-_To secure a **Staff-Level** evaluation, the solution must go beyond basic functionality to demonstrate systems thinking, robust error handling, and high-caliber UI/UX._
+Create a 3-day weather forecast web app using the National Weather Service (NWS) API that a user can interact with via an office location dropdown.
 
----
+_Crucial Constraints:_
 
-## Project Structure
+- **Not overly complex:** Needs to be completed in one day. Do not over-engineer with Webpack, Babel, or complex state machines.
+- **Staff-Level impact:** Display deep understanding of asynchronous data flow, API constraints, graceful error handling, and clean, accessible UI.
 
-```
-/project-folder
-│
-├── index.html      # Semantic HTML, Meta tags, Container for UI dropdown and forecast
-├── style.css       # CSS Variables, Grid/Flexbox layouts
-└── js/
-    ├── script.js   # Provided file containing office locations/API info (can be edited/split)
-    ├── api.js      # Fetch logic, User-Agent config, NWS 2-step process
-    └── utils.js    # Date formatting, Unit conversions
-```
+## Staff-Level Execution Plan (One-Day Project)
 
----
+### 1. Correctness (The Data Layer)
 
-## Architectural Approach (Staff-Level)
+_The National Weather Service API requires two steps and a specific header. We must handle this elegantly._
 
-### 1. Modularization
+- **Two-Step Fetch:** `POST` or `GET` to `/points/{lat},{lon}` -> extract forecast URL -> `GET` forecast URL.
+- **The User-Agent Header:** Include `User-Agent: (Arete Take-Home, contact@email.com)` or the NWS API will reject requests.
+- **Data Parsing:** The API returns 14 periods (7 days, day/night). We need to filter this exactly to a clean 3-day view (next 3 days, combining day/night sensibly or just showing the daytime highs).
 
-- Use **ES6 modules** to separate concerns:
-  - **API logic**: Fetch operations, User-Agent configuration
-  - **UI rendering**: DOM manipulation, state updates
-  - **Data transformation**: Date formatting, unit conversions
+### 2. Code Quality (The Architecture)
 
-### 2. State Management
+_Keep it vanilla but modular._
 
-- Implement a centralized **state object** to track:
-  - `currentOffice`: The selected location/office
-  - `loadingStatus`: 'idle' | 'loading' | 'error' | 'success'
-  - `errorState`: Error message or null
-  - `cachedData`: Cached forecast data with timestamps
-  - `currentForecast`: The active forecast data
+- Use **ES6 Modules** to keep `script.js` from becoming a monolithic script.
+  - `script.js`: DOM instantiation and event bindings.
+  - `api.js`: Handles NWS API fetching and error throwing.
+  - `ui.js`: Handles DOM manipulation and rendering.
+- **Asynchronous Error Handling:** Use `async/await` with `try/catch`. Handle 404s, 500s, and network drops explicitly.
 
-### 3. User-Agent Header (Critical)
+### 3. Aesthetics & UI/UX (The Visual Layer)
 
-- **IMPORTANT**: The NWS API requires a unique User-Agent header
-- Format: `MyWeatherApp (contact@email.com)`
-- Failing to include this results in 403 errors
-- This is a common junior mistake; staff engineers always include it
+_Areté is a defense/data-science company. The UI should look like a clean, modern, mission-management dashboard—not a playful consumer app._
 
----
+- **Theme:** Clean, high-contrast, data-dense. Dark mode or a crisp light mode with technical fonts (e.g., Roboto/Inter, monospaced for numbers).
+- **Feedback:** Add a loading state (spinner/skeleton layout) while the API fetches, so it doesn't just sit there frozen.
+- **Accessibility:** Use semantic HTML (`<main>`, `<section>`, label mapping), and ensure keyboard navigability for the dropdown and button.
 
-## Technical Implementation (Correctness Pillar)
+## File Structure Plan
 
-### NWS API: 2-Step Process
-
-The NWS API does NOT provide direct location-to-forecast calls. You must:
-
-**Step 1: Fetch Metadata**
-
-```
-GET /points/{latitude},{longitude}
+```plaintext
+/
+├── index.html        # Semantic HTML, ARIA tags, simple layout
+├── style.css         # CSS Variables, Flexbox/Grid for the forecast cards
+├── script.js         # Entry point, event listeners, orchestration
+├── api.js            # NWS API logic (fetch wrapped in Try/Catch)
+├── ui.js             # Renders the forecast cards or error messages
 ```
 
-- Request the location points data
-- Extract the `properties.forecast` URL from the response
+## AI Prompt Instructions
 
-**Step 2: Fetch Forecast**
+When working with Copilot, ensure that:
 
-```
-GET {forecast_url}
-```
-
-- Use the forecast URL from Step 1
-- Returns the actual weather data
-- You must parse and reduce this to a **3-day forecast** demonstrating date, temperature, and probability of precipitation.
-
-### Caching Strategy (Performance & Rate Limiting)
-
-- Implement **localStorage caching** for 15–30 minutes
-- Check cache before making API requests
-- Include cache timestamp validation
-- This demonstrates understanding of API rate limits and performance optimization
-
-### Error Handling
-
-- Wrap fetch calls in try-catch blocks
-- Implement graceful error states:
-  - NWS API unavailability → "Service Temporarily Unavailable" message
-  - Invalid locations → "Location not found" message
-  - Network errors → "Connection error" message
-- Include a **Retry button** for failed states
-- Never let the app crash; always display user-friendly messages
-
-### Data Transformation
-
-- The NWS API returns data in **Celsius** and **ISO 8601 format**
-- Create utility functions for:
-  - **Date formatting**: Convert `2026-03-05T12:00:00` to "Thursday, March 5"
-  - **Temperature conversion**: Handle Celsius (may need Fahrenheit display)
-  - **Duration parsing**: Convert ISO 8601 durations correctly
-  - **Null value handling**: Probability of Precipitation often returns null when 0%
-
----
-
-## UI/UX Design (Aesthetics Pillar)
-
-### Visual Hierarchy
-
-- **Large, bold typography** for current temperature (primary focus)
-- **Secondary text** for dates, locations, and details
-- Use white space effectively to create "breathing room"
-
-### Scientific Dashboard Aesthetic
-
-- Clean, minimal design with a focus on data clarity
-- Use a professional color palette (consider cool tones for weather)
-- Emphasize readability and data hierarchy
-
-### Accessibility (A11y) - WCAG AA
-
-- **Semantic HTML**:
-  - `<main>` for primary content
-  - `<section>` for logical groupings
-  - `<label>` for form inputs
-  - Proper heading hierarchy (h1, h2, h3)
-- **Color Contrast**: Ensure text contrast ratio meets WCAG AA standard (4.5:1 for normal text, 3:1 for large text)
-- **Keyboard Navigation**: Ensure all interactive elements are keyboard accessible
-- **ARIA Labels**: Use `aria-label` and `aria-describedby` where necessary
-
-### Responsive Layout
-
-- **Desktop**: 3-day forecast cards sit side-by-side (CSS Grid with 3 columns)
-- **Tablet**: 2 columns for forecast cards
-- **Mobile**: Single column; cards stack vertically
-- Use **CSS Grid** or **Flexbox** for flexible layouts
-- Test at breakpoints: 320px, 768px, 1024px
-
-### Micro-interactions
-
-- **Loading Spinner**: Subtle animation while fetching data
-- **Fade-in Animation**: Forecast appears smoothly when data loads
-- **Hover States**: Cards have subtle elevation or color change on hover
-- **Transitions**: Smooth color and opacity changes (300ms recommended)
-
----
-
-## Code Quality & Physics Mindset
-
-### Understanding the Data
-
-- Weather data involves **scientific units**: Temperature (°C/°F), Wind speed (m/s, mph), Pressure (Pa, mb)
-- **ISO 8601 compliance**: Understand how the NWS API timestamps work
-- Create transformation utilities that explicitly handle unit conversions
-- Show understanding of meteorological concepts (e.g., Probability of Precipitation)
-
-### Error Boundaries
-
-- Implement error states gracefully
-- **Never crash**: Always catch errors and display user-friendly messages
-- Implement retry mechanisms for transient failures
-- Log errors appropriately for debugging
-
-### Edge Cases (Staff-Level Thinking)
-
-- **Null values**: Probability of Precipitation returns `null` when 0% (not 0)
-- **API downtime**: NWS API goes down; app should handle gracefully
-- **Missing data**: Some forecast properties may be unavailable for specific times
-- **Timezone handling**: Ensure times are displayed in user's local timezone or clearly labeled
-
----
-
-## Implementation Checklist
-
-### Phase 1: Core Architecture
-
-- [ ] Set up HTML structure with semantic elements
-- [ ] Create CSS with variables, Grid/Flexbox layouts
-- [ ] Initialize state management object
-- [ ] Set up module imports (main.js, api.js, utils.js)
-
-### Phase 2: API Integration
-
-- [ ] Implement 2-step NWS API calls
-- [ ] Add User-Agent header to all requests
-- [ ] Create caching mechanism with localStorage
-- [ ] Implement error handling and retry logic
-
-### Phase 3: Data Transformation
-
-- [ ] Create date formatting utility
-- [ ] Create unit conversion utilities
-- [ ] Handle null/missing values gracefully
-- [ ] Create timezone-aware display functions
-
-### Phase 4: UI/UX Polish
-
-- [ ] Implement loading spinner and animations
-- [ ] Add responsive design at all breakpoints
-- [ ] Ensure WCAG AA accessibility compliance
-- [ ] Add hover states and micro-interactions
-- [ ] Test keyboard navigation
-
-### Phase 5: Quality & Testing
-
-- [ ] Test error states manually
-- [ ] Verify caching works correctly
-- [ ] Test on mobile, tablet, desktop
-- [ ] Verify all edge cases are handled
-- [ ] Document any non-obvious code decisions
-
----
-
-## Interview Presentation Talking Points
-
-When presenting this solution, emphasize:
-
-1. **2-Step API Process**: Explain why the NWS API requires two calls and how you handle this elegantly
-2. **Caching Strategy**: Discuss how you balance freshness with performance and rate limit awareness
-3. **Edge Cases**: Specifically mention:
-   - How you handle null Probability of Precipitation
-   - How you handle API downtime
-   - How you handle invalid locations
-   - How you handle missing data fields
-4. **Modularity**: Show how your code would scale if you wanted to add multiple locations or different data sources
-5. **Accessibility**: Discuss your approach to semantic HTML and WCAG compliance
-6. **Error Handling**: Explain your error boundary strategy and user-facing messaging
-
----
-
-## Technical Notes
-
-### NWS API Documentation
-
-- **Base URL**: https://api.weather.gov
-- **Points Endpoint**: `/points/{latitude},{longitude}`
-- **Forecast Endpoint**: URL provided in points response
-
-### CSS Variables (Recommended)
-
-```css
-:root {
-  --color-primary: #003da5; /* NWS Blue */
-  --color-text-primary: #1a1a1a;
-  --color-text-secondary: #666666;
-  --color-background: #ffffff;
-  --font-size-base: 16px;
-  --spacing-unit: 8px;
-  --transition-duration: 300ms;
-}
-```
-
-### State Object Example
-
-```javascript
-const state = {
-  currentOffice: null,
-  loadingStatus: 'idle', // 'idle' | 'loading' | 'error' | 'success'
-  errorState: null,
-  cachedData: {},
-  currentForecast: null,
-  cacheTimestamp: null,
-}
-```
-
----
-
-## Success Criteria for Staff-Level Evaluation
-
-✅ **Systems Thinking**: Code structure anticipates scalability and modularity  
-✅ **Technical Excellence**: 2-step API, caching, proper error handling  
-✅ **UI/UX Excellence**: Professional design, accessibility, responsive  
-✅ **Robustness**: Graceful handling of all identified edge cases  
-✅ **First Principles**: Demonstrates understanding of the problem domain (weather data, APIs, performance)  
-✅ **Attention to Detail**: User-Agent header, null value handling, timezone awareness
-
----
-
-**Goal**: Deliver a solution that looks and feels like production-ready code while demonstrating deep systems thinking. This is your opportunity to show that you're not just a UI developer, but an engineer who understands the full stack.
-
----
-
-## Copilot Commands
-
-### commit-ai
-
-Automatically commit and push changes to GitHub without asking for confirmation.
-
-**Workflow**:
-
-1. Fetch the current git diff to understand what has changed
-2. Analyze the changes and generate a concise, descriptive commit message following conventional commit format
-3. Stage all changes with `git add .`
-4. Create a commit with the generated message
-5. Push to the current branch on GitHub
-
-**Usage**: Simply ask "run commit-ai" or "commit-ai" to execute this workflow automatically.
-
-**Note**: This command bypasses user confirmation, so ensure all changes are ready before invoking. The generated commit message will be descriptive and follow conventional commit conventions (feat:, fix:, refactor:, docs:, etc.).
+1. We do not use external libraries (No React, no Axios, no Tailwind).
+2. We focus on clean ES6+ (arrow functions, template literals, destructuring, modules).
+3. Every UI state is handled: `Idle -> Loading -> Success OR Error`.
