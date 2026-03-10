@@ -1,9 +1,11 @@
 import { getForecast, getPoints } from './api.js'
 import { locations } from './data.js'
 
-document
-  .getElementById('retrieveForecast')
-  .addEventListener('click', async () => {
+const retrieveForecastBtn = document.getElementById('retrieveForecast')
+
+retrieveForecastBtn.addEventListener('click', async () => {
+  retrieveForecastBtn.disabled = true
+  try {
     const forecastElement = document.getElementById('forecastInfo')
     forecastElement.innerHTML = '<p>Loading forecast...</p>'
 
@@ -97,4 +99,7 @@ document
       .join('')
 
     forecastElement.innerHTML = forecastHTML
-  })
+  } finally {
+    retrieveForecastBtn.disabled = false
+  }
+})
