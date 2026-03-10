@@ -1,16 +1,29 @@
 # Areté Take-Home: Staff-Level Guidelines
 
-## Constraints
-- **3 Files Only:** `index.html`, `style.css`, `script.js`.
-- **Zero Configuration:** Must run directly via `file://` (just double-clicking `index.html`). No ES6 modules mapped to external files.
-- **Tech:** Raw JS, HTML, CSS.
+This project contains two versions to demonstrate different architectural patterns.
 
-## Architecture Structure (Inside `script.js`)
-Use logical separation of concerns without creating new files:
-- `WeatherAPI`: Handles the 2-step NWS fetch (`/points` -> `/forecast`), User-Agent header, and `try/catch` error handling.
-- `UIController`: Manages DOM manipulation, loading states, and error rendering.
-- `App`: Orchestrates event listeners and data flow.
+## Version 1: No Modules (Directory: `no-modules-version`)
+**Goal:** Simplicity and zero-config execution.
+- **Constraints:**
+    - Single `script.js` file.
+    - Must run directly via `file://` (double-clicking `index.html`).
+- **Architecture (Inside `script.js`):**
+    - Use logical separation of concerns without creating new files:
+    - `WeatherAPI`: Handles the 2-step NWS fetch (`/points` -> `/forecast`), User-Agent header, and `try/catch` error handling.
+    - `UIController`: Manages DOM manipulation, loading states, and error rendering.
+    - `App`: Orchestrates event listeners and data flow.
 
-## Requirements
+## Version 2: ES Modules (Directory: `modules-version`)
+**Goal:** Modern development practices and separation of concerns.
+- **Constraints:**
+    - Use ES Modules (`api.js`, `data.js`, `script.js`).
+    - Requires a local server (e.g., Live Server) to run.
+- **Architecture:**
+    - `api.js`: Handles API calls and caching.
+    - `data.js`: Stores static data like locations.
+    - `script.js`: Main entry point and UI logic.
+
+## General Requirements (Both Versions)
 - **Data:** Filter the NWS response into strictly a 3-day view (date, temperature, probability of precipitation).
 - **Design:** Clean, data-centric "mission dashboard" aesthetic.
+- **Assumptions:** Document key assumptions (API Stability, Units, Data Completeness, Weather Structure, Time Zones) directly in the code.

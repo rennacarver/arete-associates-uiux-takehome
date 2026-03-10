@@ -1,12 +1,17 @@
-# Areté Office 3-Day Forecast
+# Arete Weather Forecast Project
 
-A single-page web application displaying a 3-day weather forecast for Areté office locations using the National Weather Service (NWS) API.
+This repository contains two versions of the weather forecast application:
+
+1.  **[no-modules-version](./no-modules-version)**: Uses a single `script.js` file. Best for running directly from the file system (double-clicking `index.html`) without a local server.
+2.  **[modules-version](./modules-version)**: Uses ES Modules (`api.js`, `data.js`, `script.js`). Requires a local server (e.g., Live Server, `python -m http.server`) to avoid CORS errors.
 
 ## How to Run
-Simply open `index.html` in any web browser. No build steps, dependencies, or local servers are required.
 
-## Technical Details
-- **Stack:** 100% Vanilla JavaScript, HTML5, and SS3.
-- **Architecture:** Restricted to the core 3 files (`index.html`, `style.css`, `script.js`), utilizing namespaced objects within `script.js` to enforce separation of concerns (`API`, `UI`, `App`) without triggering local CORS policies.
-- **API Integration:** Implements the required two-step NWS API resolution with thorough error handling and fallback UI states.
-- **Design:** Mission-critical dashboard aesthetic featuring responsive CSS Grid layouts.
+### No Modules Version (Recommended for simplicity)
+1.  Navigate to `no-modules-version`.
+2.  Open `index.html` in your browser.
+
+### Modules Version
+1.  Navigate to `modules-version`.
+2.  Start a local development server in this directory.
+3.  Open the local server URL in your browser.

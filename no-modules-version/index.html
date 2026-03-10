@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arete Weather Forecast</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <header>
+        <h1>Areté Weather</h1>
+      </header>
+
+      <main>
+        <div class="controls">
+          <label for="officeSelect">Select Office:</label>
+          <div class="input-group">
+            <select id="officeSelect">
+              <option value="Falls Church">Falls Church (VA)</option>
+              <option value="Healdsburg">Healdsburg (CA)</option>
+              <option value="Huntsville">Huntsville (AL)</option>
+              <option value="Niceville">Niceville (FL)</option>
+              <option value="Niwot">Niwot (CO)</option>
+              <option value="Northridge">Northridge (CA)</option>
+              <option value="Tucson">Tucson (AZ)</option>
+            </select>
+            <button id="retrieveForecast">Get Forecast</button>
+          </div>
+        </div>
+
+        <div id="forecastInfo" class="forecast-grid"></div>
+      </main>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
