@@ -23,7 +23,7 @@ document
     // Use NOAA API (https://api.weather.gov/) to retrieve forecast information
     // from the National Weather Service
 
-    // Use the locations latitude/longitude and the "points" API endpoint
+    // Use the location's latitude/longitude and the "points" API endpoint
     // to find the gridId, gridX, and gridY values
     // https://api.weather.gov/points/38.8823,-77.1711
     const points = await getPoints(location.latitude, location.longitude)
