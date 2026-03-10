@@ -138,6 +138,8 @@ document
     // and probability of precipitation for the next 3 days
     // Weather Structure Assumption: We assume the NWS periods array is always chronological
     // and starts with the current/upcoming period.
+    // 3-Day Forecast Assumption: We assume the "3-day view" should include the current day if available.
+    // If run at night, NWS returns "Tonight" first (isDaytime=false), so the view effectively starts tomorrow.
     const nextThreeDays = forecast
       .filter((period) => period.isDaytime)
       .slice(0, 3)
