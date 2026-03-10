@@ -4,7 +4,31 @@ A single-page web application displaying a 3-day weather forecast for Areté off
 
 ## How to Run
 
-Simply open `index.html` in any web browser. No build steps, dependencies, or local servers are required.
+This version uses ES Modules, which require a local web server to run (browsers cannot load modules directly from the file system due to CORS).
+
+### Using Python (Often pre-installed on macOS/Linux/Windows)
+
+1. Open your terminal or command prompt.
+2. Navigate to this directory:
+   ```bash
+   cd modules-version
+   ```
+3. Start a simple HTTP server:
+
+   ```bash
+   # Python 3 (Most common)
+   python3 -m http.server 8000
+
+   # Python 2 (Legacy)
+   python -m SimpleHTTPServer 8000
+   ```
+
+4. Open your browser and visit `http://localhost:8000`.
+
+### Other Options
+
+- **VS Code:** Install the "Live Server" extension, right-click `index.html`, and select "Open with Live Server".
+- **Node.js:** `npx http-server .`
 
 ## Technical Details
 
