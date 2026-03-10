@@ -83,9 +83,15 @@ document
 
 async function getPoints(latitude, longitude) {
   const url = `https://api.weather.gov/points/${latitude},${longitude}`
+  const options = {
+    headers: {
+      'User-Agent': 'AreteWeatherApp/1.0',
+      Accept: 'application/geo+json',
+    },
+  }
 
   try {
-    const response = await fetch(url)
+    const response = await fetch(url, options)
     if (!response.ok) {
       throw new Error(`Error fetching points data: ${response.statusText}`)
     }
@@ -99,9 +105,15 @@ async function getPoints(latitude, longitude) {
 
 async function getForecast(gridId, gridX, gridY) {
   const url = `https://api.weather.gov/gridpoints/${gridId}/${gridX},${gridY}/forecast`
+  const options = {
+    headers: {
+      'User-Agent': 'AreteWeatherApp/1.0',
+      Accept: 'application/geo+json',
+    },
+  }
 
   try {
-    const response = await fetch(url)
+    const response = await fetch(url, options)
 
     if (!response.ok) {
       throw new Error(`Error fetching forecast: ${response.statusText}`)
